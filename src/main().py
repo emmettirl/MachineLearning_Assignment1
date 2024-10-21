@@ -20,18 +20,12 @@ def main():
     start_time = time.time()  # start measuring time
 
     # Task 1
-    training_data, training_labels, test_data, test_labels = task1()
-
-    # bundling into a test and training data frame
-    training_df = pd.DataFrame({'Review': training_data, 'Sentiment': training_labels})
-    test_df = pd.DataFrame({'Review': test_data, 'Sentiment': test_labels})
-
-    # Task 2
+    training_df, test_df = task1()
     train_word_list, test_word_list = task2(training_df, test_df, minimumWordLength, minimumWordOccurrence)
-
-    # Task 3
-
     task3(training_df, test_df, train_word_list, test_word_list, minimumWordLength, minimumWordOccurrence)
+    task4()
+    # task5()
+    # task6()
 
     print(f"Execution time: {time.time() - start_time:.2f} seconds")  # calculate elapsed
 
@@ -53,7 +47,10 @@ def task1():
     print("Positive Labels in test data: " + str(test_labels[test_labels == 'positive'].shape[0]))
     print("Negative Labels in test data: " + str(test_labels[test_labels == 'negative'].shape[0]))
 
-    return training_data, training_labels, test_data, test_labels
+    training_df = pd.DataFrame({'Review': training_data, 'Sentiment': training_labels})
+    test_df = pd.DataFrame({'Review': test_data, 'Sentiment': test_labels})
+
+    return training_df, test_df
 
 
 def task2(training_df, test_df, minimum_word_length, minimum_word_occurrence):
@@ -94,6 +91,14 @@ def task3(training_df, test_df, train_word_list, test_word_list, minimum_word_le
     print(test_word_counts_neg.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
+def task4():
+    print_header("#", "Task 4")
+
+def task5():
+    print_header("#", "Task 5")
+
+def task6():
+    print_header("#", "Task 6")
 
 def word_in_review_occurrences(df, word_list, minimum_word_length, minimum_word_occurrence, cache_name, sentiment):
     words_cache_file = source_filename + "-" + cache_name + "-" + str(minimum_word_length) + "-" + str(
