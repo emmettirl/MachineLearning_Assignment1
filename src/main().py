@@ -1,16 +1,19 @@
 import pandas as pd
-import sklearn as sk
-import sklearn.model_selection as skms
-import matplotlib.pyplot as plt
 import os
 import pickle
 
 import time
 
-from pandas import value_counts
+source_filename = 'movie_reviews'
+file_extension = '.xlsx'
+main_cache_filename = source_filename + ".pkl"
+cache_folder = 'cache'
 
-source_filename = 'movie_reviews.xlsx'
-cache_filename = source_filename + ".pkl"
+minimumWordLength, minimumWordOccurrence = 10, 20
+
+# Create a cache folder if it does not exist
+if not os.path.exists(cache_folder):
+    os.makedirs(cache_folder)
 
 def main():
     start_time = time.time() # start measuring time
@@ -23,12 +26,11 @@ def main():
     testDf = pd.DataFrame({'Review': testData, 'Sentiment': testLabels})
 
 # Task 2
-    minimumWordLength, minimumWordOccurence = 8, 20
-    trainWordList, testWordList = task2(trainingDf, testDf, minimumWordLength, minimumWordOccurence)
+    trainWordList, testWordList = task2(trainingDf, testDf, minimumWordLength, minimumWordOccurrence)
 
 # Task 3
 
-    task3(trainingDf, testDf, trainWordList, testWordList)
+    task3(trainingDf, testDf, trainWordList, testWordList, minimumWordLength, minimumWordOccurrence)
 
 
     print(f"Execution time: {time.time() - start_time:.2f} seconds")     # calculate elapsed
@@ -60,25 +62,48 @@ def task2(trainingDf, testDf, minimumWordLength, minimumWordOccurence):
 
     return train_wordList, test_wordList
 
-def task3(trainingDf, testDf, trainWordList, testWordList):
+def task3(trainingDf, testDf, trainWordList, testWordList, minimumWordLength, minimumWordOccurence):
     printHeader("#", "Task 3")
+    train_word_counts_df = get_word_counts_df(trainingDf, trainWordList, minimumWordLength, minimumWordOccurence, "train_word_counts_df")
+    print(train_word_counts_df)
+    test_word_counts_df = get_word_counts_df(testDf, testWordList, minimumWordLength, minimumWordOccurence, "test_word_counts_df")
+    print(test_word_counts_df)
 
-    word_counts = {word: 0 for word in trainWordList}
 
-    positive_reviews = trainingDf[trainingDf['Sentiment'] == 'positive']
-    total_reviews = positive_reviews.shape[0]
+def get_word_counts_df(df, wordList, minimumWordLength, minimumWordOccurence, cache_name):
+    words_cache_file =  source_filename + "-" + cache_name + "-" + str(minimumWordLength) + "-"+ str(minimumWordOccurence) + ".pkl"
 
-    start_time = time.time()
-    for i, review in enumerate(positive_reviews['Review']):
-        for word in trainWordList:
-            if word in review:
-                word_counts[word] += 1
-        progressbar(i, total_reviews, start_time)
+    cache_filepath = os.path.join(cache_folder, words_cache_file)
 
-    word_counts_df = pd.DataFrame(list(word_counts.items()), columns=['Word', 'Positive_Review_Count'])
-    print (word_counts_df)
+    # this task is expensive, so I will cache the results, taking into account the minimum word length and minimum word occurrence may change
+    if os.path.exists(cache_filepath):
 
-    # for each word in train WordList, count the number of positive reviews it occurs in in Training Df
+        with open(cache_filepath, 'rb') as f:
+            word_counts_df = pickle.load(f)
+        print(f'Loaded data from cache: {cache_filepath}\n')
+
+    else:
+
+        word_counts = {word: 0 for word in wordList}
+
+        positive_reviews = df[df['Sentiment'] == 'positive']
+        total_reviews = positive_reviews.shape[0]
+
+        start_time = time.time()
+        for i, review in enumerate(positive_reviews['Review']):
+            for word in wordList:
+                if word in review:
+                    word_counts[word] += 1
+            progressbar(i, total_reviews, start_time)
+
+        word_counts_df = pd.DataFrame(list(word_counts.items()), columns=['Word', 'Positive_Review_Count'])
+
+        with open(cache_filepath, 'wb') as f:
+            pickle.dump(word_counts_df, f)
+        print(f'Saved data to cache: {cache_filepath}\n')
+
+    return word_counts_df
+
 
 def extract_features(data, minimumWordLength, minimumWordOccurence):
     # replace all dashes with spaces
@@ -106,13 +131,14 @@ def extract_features(data, minimumWordLength, minimumWordOccurence):
 # The file is large, and this process is slow
 # since I will be running this a number of times, I decided to cache the data frame
 def read_data():
-    if os.path.exists(cache_filename):
-        with open(cache_filename, 'rb') as f:
+    cache_path = os.path.join(cache_folder, main_cache_filename)
+    if os.path.exists(cache_path):
+        with open(cache_path, 'rb') as f:
             df = pickle.load(f)
         print('Loaded data from cache\n')
     else:
-        df = pd.read_excel(source_filename)
-        with open(cache_filename, 'wb') as f:
+        df = pd.read_excel(source_filename + file_extension)
+        with open(cache_path, 'wb') as f:
             pickle.dump(df, f)
         print('Loaded data from Excel and cached it')
     return df
@@ -134,18 +160,6 @@ def printHeader(char, text):
     print(char * 80 + '\n')
 
 # # Function to display a progress bar so the user knows the program is still running and how far along it is
-# def progressbar(i, upper_range):
-#     # Calculate the percentage of completion
-#     percentage = (i / (upper_range - 1)) * 100
-#     # Calculate the number of '#' characters to display
-#     num_hashes = int(percentage)
-#     # Create the progress bar string
-#     progress_string = f'\r{("█" * num_hashes)}{("_" * (100 - num_hashes))} {percentage:.2f}%'
-#     if i == upper_range - 1:
-#         print(progress_string)
-#     else:
-#         print(progress_string, end='', flush=True)
-
 def progressbar(i, upper_range, start_time):
     # Calculate the percentage of completion
     percentage = (i / (upper_range - 1)) * 100
@@ -160,7 +174,7 @@ def progressbar(i, upper_range, start_time):
     else:
         remaining_time = 0
     # Create the progress bar string
-    progress_string = f'\r{("█" * num_blocks)}{(" " * (100 - num_blocks))} {percentage:.2f}% Elapsed: {elapsed_time:.2f}s Remaining: {remaining_time:.2f}s'
+    progress_string = f'\r{("█" * num_blocks)}{("_" * (100 - num_blocks))} {percentage:.2f}% Elapsed: {elapsed_time:.2f}s Remaining: {remaining_time:.2f}s'
     if i == upper_range - 1:
         print(progress_string)
     else:
