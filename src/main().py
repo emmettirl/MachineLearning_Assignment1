@@ -15,79 +15,89 @@ minimumWordLength, minimumWordOccurrence = 10, 20
 if not os.path.exists(cache_folder):
     os.makedirs(cache_folder)
 
+
 def main():
-    start_time = time.time() # start measuring time
+    start_time = time.time()  # start measuring time
 
-# Task 1
-    trainingData, trainingLabels, testData, testLabels = task1()
+    # Task 1
+    training_data, training_labels, test_data, test_labels = task1()
 
-# bundling into a test and training data frame
-    trainingDf = pd.DataFrame({'Review': trainingData, 'Sentiment': trainingLabels})
-    testDf = pd.DataFrame({'Review': testData, 'Sentiment': testLabels})
+    # bundling into a test and training data frame
+    training_df = pd.DataFrame({'Review': training_data, 'Sentiment': training_labels})
+    test_df = pd.DataFrame({'Review': test_data, 'Sentiment': test_labels})
 
-# Task 2
-    trainWordList, testWordList = task2(trainingDf, testDf, minimumWordLength, minimumWordOccurrence)
+    # Task 2
+    train_word_list, test_word_list = task2(training_df, test_df, minimumWordLength, minimumWordOccurrence)
 
-# Task 3
+    # Task 3
 
-    task3(trainingDf, testDf, trainWordList, testWordList, minimumWordLength, minimumWordOccurrence)
+    task3(training_df, test_df, train_word_list, test_word_list, minimumWordLength, minimumWordOccurrence)
 
-
-    print(f"Execution time: {time.time() - start_time:.2f} seconds")     # calculate elapsed
+    print(f"Execution time: {time.time() - start_time:.2f} seconds")  # calculate elapsed
 
 
 def task1():
-    printHeader("#", "Task 1")
+    print_header("#", "Task 1")
 
     df = read_data()
-    printDivider("-")
+    print_divider("-")
 
     print("Total row count", df.shape[0])
-    printDivider("-")
-    trainingData, trainingLabels, testData, testLabels = split_data(df)
+    print_divider("-")
+    training_data, training_labels, test_data, test_labels = split_data(df)
 
-    #where positive
-    print("Positive Labels in training data: " + str(trainingLabels[trainingLabels == 'positive'].shape[0]))
-    print("Negative Labels in training data: " + str(trainingLabels[trainingLabels == 'negative'].shape[0]))
-    printDivider("-")
-    print("Positive Labels in test data: " + str(testLabels[testLabels == 'positive'].shape[0]))
-    print("Negative Labels in test data: " + str(testLabels[testLabels == 'negative'].shape[0]))
+    # where positive
+    print("Positive Labels in training data: " + str(training_labels[training_labels == 'positive'].shape[0]))
+    print("Negative Labels in training data: " + str(training_labels[training_labels == 'negative'].shape[0]))
+    print_divider("-")
+    print("Positive Labels in test data: " + str(test_labels[test_labels == 'positive'].shape[0]))
+    print("Negative Labels in test data: " + str(test_labels[test_labels == 'negative'].shape[0]))
 
-    return trainingData, trainingLabels, testData, testLabels
+    return training_data, training_labels, test_data, test_labels
 
-def task2(trainingDf, testDf, minimumWordLength, minimumWordOccurence):
-    printHeader("#", "Task 2")
 
-    train_wordList = extract_features(trainingDf, minimumWordLength, minimumWordOccurence)
-    print(f"Number of unique words in training data, longer than {minimumWordLength} characters, which occur more than {minimumWordOccurence} times: " + str(len(train_wordList)))
+def task2(training_df, test_df, minimum_word_length, minimum_word_occurrence):
+    print_header("#", "Task 2")
 
-    test_wordList = extract_features(testDf, minimumWordLength, minimumWordOccurence)
-    print(f"Number of unique words in test data, longer than {minimumWordLength} characters, which occur more than {minimumWordOccurence} times: " + str(len(test_wordList)))
+    train_word_list = extract_features(training_df, minimum_word_length, minimum_word_occurrence)
+    print(
+        f"Number of unique words in training data, longer than {minimum_word_length} characters, which occur more than {minimum_word_occurrence} times: " + str(
+            len(train_word_list)))
 
-    return train_wordList, test_wordList
+    test_word_list = extract_features(test_df, minimum_word_length, minimum_word_occurrence)
+    print(
+        f"Number of unique words in test data, longer than {minimum_word_length} characters, which occur more than {minimum_word_occurrence} times: " + str(
+            len(test_word_list)))
 
-def task3(trainingDf, testDf, trainWordList, testWordList, minimumWordLength, minimumWordOccurence):
-    printHeader("#", "Task 3")
-    train_word_counts_pos = wordInReviewOccurences(trainingDf, trainWordList, minimumWordLength, minimumWordOccurence, "train_word_counts_pos", 'positive')
+    return train_word_list, test_word_list
+
+
+def task3(training_df, test_df, train_word_list, test_word_list, minimum_word_length, minimum_word_occurrence):
+    print_header("#", "Task 3")
+    train_word_counts_pos = word_in_review_occurrences(training_df, train_word_list, minimum_word_length, minimum_word_occurrence,
+                                                   "train_word_counts_pos", 'positive')
     print(train_word_counts_pos.sort_values(by='review_count', ascending=False))
-    printDivider("-")
+    print_divider("-")
 
-    train_word_counts_neg = wordInReviewOccurences(trainingDf, trainWordList, minimumWordLength, minimumWordOccurence, "train_word_counts_neg", 'negative')
+    train_word_counts_neg = word_in_review_occurrences(training_df, train_word_list, minimum_word_length, minimum_word_occurrence,
+                                                   "train_word_counts_neg", 'negative')
     print(train_word_counts_neg.sort_values(by='review_count', ascending=False))
-    printDivider("-")
+    print_divider("-")
 
-    test_word_counts_pos = wordInReviewOccurences(testDf, testWordList, minimumWordLength, minimumWordOccurence, "test_word_counts_pos", 'positive')
+    test_word_counts_pos = word_in_review_occurrences(test_df, test_word_list, minimum_word_length, minimum_word_occurrence,
+                                                  "test_word_counts_pos", 'positive')
     print(test_word_counts_pos.sort_values(by='review_count', ascending=False))
-    printDivider("-")
+    print_divider("-")
 
-    test_word_counts_neg = wordInReviewOccurences(testDf, testWordList, minimumWordLength, minimumWordOccurence, "test_word_counts_neg", 'negative')
+    test_word_counts_neg = word_in_review_occurrences(test_df, test_word_list, minimum_word_length, minimum_word_occurrence,
+                                                  "test_word_counts_neg", 'negative')
     print(test_word_counts_neg.sort_values(by='review_count', ascending=False))
-    printDivider("-")
+    print_divider("-")
 
 
-def wordInReviewOccurences(df, wordList, minimumWordLength, minimumWordOccurence, cache_name, sentiment):
-    words_cache_file =  source_filename + "-" + cache_name + "-" + str(minimumWordLength) + "-"+ str(minimumWordOccurence) + ".pkl"
-
+def word_in_review_occurrences(df, word_list, minimum_word_length, minimum_word_occurrence, cache_name, sentiment):
+    words_cache_file = source_filename + "-" + cache_name + "-" + str(minimum_word_length) + "-" + str(
+        minimum_word_occurrence) + ".pkl"
     cache_filepath = os.path.join(cache_folder, words_cache_file)
 
     # this task is expensive, so I will cache the results, taking into account the minimum word length and minimum word occurrence may change
@@ -98,15 +108,13 @@ def wordInReviewOccurences(df, wordList, minimumWordLength, minimumWordOccurence
         print(f'Loaded data from cache: {cache_filepath}\n')
 
     else:
-
-        word_counts = {word: 0 for word in wordList}
-
+        word_counts = {word: 0 for word in word_list}
         reviews = df[df['Sentiment'] == sentiment]
         total_reviews = reviews.shape[0]
-
         start_time = time.time()
+
         for i, review in enumerate(reviews['Review']):
-            for word in wordList:
+            for word in word_list:
                 if word in review:
                     word_counts[word] += 1
             progressbar(i, total_reviews, start_time)
@@ -120,7 +128,7 @@ def wordInReviewOccurences(df, wordList, minimumWordLength, minimumWordOccurence
     return word_counts_df
 
 
-def extract_features(data, minimumWordLength, minimumWordOccurence):
+def extract_features(data, minimum_word_length, minimum_word_occurrence):
     # replace all dashes with spaces
     data["Review"] = data["Review"].replace("-", ' ', regex=True)
     # remove all non-alphanumeric characters
@@ -133,10 +141,10 @@ def extract_features(data, minimumWordLength, minimumWordOccurence):
     # explode the words into separate rows
     word_data = pd.DataFrame({"words": data["Review"].explode()})
 
-    word_data = word_data[word_data["words"].str.len() >= minimumWordLength]
+    word_data = word_data[word_data["words"].str.len() >= minimum_word_length]
     word_vc = word_data['words'].value_counts().reset_index()
     word_vc.columns = ['Word', 'Count']
-    word_vc = word_vc[word_vc["Count"] >= minimumWordOccurence]
+    word_vc = word_vc[word_vc["Count"] >= minimum_word_occurrence]
 
     wordlist = word_vc['Word'].tolist()
     return wordlist
@@ -158,26 +166,30 @@ def read_data():
         print('Loaded data from Excel and cached it')
     return df
 
-
     # this query creates a boolean mask for the rows that have the value 'train' or 'test' in the 'Split' column
     # the mask is then used to filter the rows that will be used for training
     # it returns the text column and the sentiment column as separate arrays
+
+
 def split_data(df):
-    trainingData = df[df['Split'] == 'train']['Review']
-    trainingLabels = df[df['Split'] == 'train']['Sentiment']
-    testData = df[df['Split'] == 'test']['Review']
-    testLabels = df[df['Split'] == 'test']['Sentiment']
-    return trainingData, trainingLabels, testData, testLabels
+    training_data = df[df['Split'] == 'train']['Review']
+    training_labels = df[df['Split'] == 'train']['Sentiment']
+    test_data = df[df['Split'] == 'test']['Review']
+    test_labels = df[df['Split'] == 'test']['Sentiment']
+    return training_data, training_labels, test_data, test_labels
 
-def printHeader(char, text):
-    print('\n'+ char * 80)
+
+def print_header(char, text):
+    print('\n' + char * 80)
     print(text.center(80, ' '))
-    print(char * 80 + '\n')
+    print(str(char * 80) + '\n')
 
-def printDivider(char):
-    print("\n" + "-" * 80 + "\n")
 
-# # Function to display a progress bar so the user knows the program is still running and how far along it is
+def print_divider(char):
+    print("\n" + char * 80 + "\n")
+
+
+# Function to display a progress bar so the user knows the program is still running and how far along it is
 def progressbar(i, upper_range, start_time):
     # Calculate the percentage of completion
     percentage = (i / (upper_range - 1)) * 100
@@ -197,6 +209,7 @@ def progressbar(i, upper_range, start_time):
         print(progress_string)
     else:
         print(progress_string, end='', flush=True)
+
 
 if __name__ == '__main__':
     main()
