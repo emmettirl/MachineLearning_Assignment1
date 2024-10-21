@@ -40,12 +40,16 @@ def task1():
     printHeader("#", "Task 1")
 
     df = read_data()
+    printDivider("-")
+
     print("Total row count", df.shape[0])
+    printDivider("-")
     trainingData, trainingLabels, testData, testLabels = split_data(df)
 
     #where positive
     print("Positive Labels in training data: " + str(trainingLabels[trainingLabels == 'positive'].shape[0]))
     print("Negative Labels in training data: " + str(trainingLabels[trainingLabels == 'negative'].shape[0]))
+    printDivider("-")
     print("Positive Labels in test data: " + str(testLabels[testLabels == 'positive'].shape[0]))
     print("Negative Labels in test data: " + str(testLabels[testLabels == 'negative'].shape[0]))
 
@@ -64,13 +68,24 @@ def task2(trainingDf, testDf, minimumWordLength, minimumWordOccurence):
 
 def task3(trainingDf, testDf, trainWordList, testWordList, minimumWordLength, minimumWordOccurence):
     printHeader("#", "Task 3")
-    train_word_counts_df = get_word_counts_df(trainingDf, trainWordList, minimumWordLength, minimumWordOccurence, "train_word_counts_df")
-    print(train_word_counts_df)
-    test_word_counts_df = get_word_counts_df(testDf, testWordList, minimumWordLength, minimumWordOccurence, "test_word_counts_df")
-    print(test_word_counts_df)
+    train_word_counts_pos = wordInReviewOccurences(trainingDf, trainWordList, minimumWordLength, minimumWordOccurence, "train_word_counts_pos", 'positive')
+    print(train_word_counts_pos.sort_values(by='review_count', ascending=False))
+    printDivider("-")
+
+    train_word_counts_neg = wordInReviewOccurences(trainingDf, trainWordList, minimumWordLength, minimumWordOccurence, "train_word_counts_neg", 'negative')
+    print(train_word_counts_neg.sort_values(by='review_count', ascending=False))
+    printDivider("-")
+
+    test_word_counts_pos = wordInReviewOccurences(testDf, testWordList, minimumWordLength, minimumWordOccurence, "test_word_counts_pos", 'positive')
+    print(test_word_counts_pos.sort_values(by='review_count', ascending=False))
+    printDivider("-")
+
+    test_word_counts_neg = wordInReviewOccurences(testDf, testWordList, minimumWordLength, minimumWordOccurence, "test_word_counts_neg", 'negative')
+    print(test_word_counts_neg.sort_values(by='review_count', ascending=False))
+    printDivider("-")
 
 
-def get_word_counts_df(df, wordList, minimumWordLength, minimumWordOccurence, cache_name):
+def wordInReviewOccurences(df, wordList, minimumWordLength, minimumWordOccurence, cache_name, sentiment):
     words_cache_file =  source_filename + "-" + cache_name + "-" + str(minimumWordLength) + "-"+ str(minimumWordOccurence) + ".pkl"
 
     cache_filepath = os.path.join(cache_folder, words_cache_file)
@@ -86,17 +101,17 @@ def get_word_counts_df(df, wordList, minimumWordLength, minimumWordOccurence, ca
 
         word_counts = {word: 0 for word in wordList}
 
-        positive_reviews = df[df['Sentiment'] == 'positive']
-        total_reviews = positive_reviews.shape[0]
+        reviews = df[df['Sentiment'] == sentiment]
+        total_reviews = reviews.shape[0]
 
         start_time = time.time()
-        for i, review in enumerate(positive_reviews['Review']):
+        for i, review in enumerate(reviews['Review']):
             for word in wordList:
                 if word in review:
                     word_counts[word] += 1
             progressbar(i, total_reviews, start_time)
 
-        word_counts_df = pd.DataFrame(list(word_counts.items()), columns=['Word', 'Positive_Review_Count'])
+        word_counts_df = pd.DataFrame(list(word_counts.items()), columns=['Word', 'review_count'])
 
         with open(cache_filepath, 'wb') as f:
             pickle.dump(word_counts_df, f)
@@ -159,6 +174,9 @@ def printHeader(char, text):
     print(text.center(80, ' '))
     print(char * 80 + '\n')
 
+def printDivider(char):
+    print("\n" + "-" * 80 + "\n")
+
 # # Function to display a progress bar so the user knows the program is still running and how far along it is
 def progressbar(i, upper_range, start_time):
     # Calculate the percentage of completion
@@ -174,7 +192,7 @@ def progressbar(i, upper_range, start_time):
     else:
         remaining_time = 0
     # Create the progress bar string
-    progress_string = f'\r{("█" * num_blocks)}{("_" * (100 - num_blocks))} {percentage:.2f}% Elapsed: {elapsed_time:.2f}s Remaining: {remaining_time:.2f}s'
+    progress_string = f'\r{("█" * num_blocks)}{("_" * (100 - num_blocks))} {percentage:.2f}% | Elapsed: {elapsed_time:.2f}s | Remaining: {remaining_time:.2f}s'
     if i == upper_range - 1:
         print(progress_string)
     else:
