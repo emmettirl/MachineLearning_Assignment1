@@ -4,7 +4,6 @@ import os
 import pickle
 import time
 import sklearn.model_selection
-from multiprocessing import Process
 
 source_filename = 'movie_reviews'
 file_extension = '.xlsx'
@@ -12,7 +11,7 @@ main_cache_filename = source_filename + ".pkl"
 
 cache_folder = 'cache'
 
-minimumWordLength, minimumWordOccurrence = 12, 100 # these values are intentionally high for testing
+minimumWordLength, minimumWordOccurrence = 12, 100  # these values are intentionally high for testing
 
 
 ########################################################################################################################
@@ -63,6 +62,8 @@ def read_data():
     # the mask is then used to filter the rows that will be used for training
     # it returns the text column and the sentiment column as separate arrays
     # data is being split based on the value in the 'Split' column, rather than a random split factor
+
+
 def split_data(df):
     training_data = df[df['Split'] == 'train']['Review']
     training_labels = df[df['Split'] == 'train']['Sentiment']
@@ -74,12 +75,12 @@ def split_data(df):
 ########################################################################################################################
 # Task 2
 ########################################################################################################################
-def task2(training_df, test_df, minimum_word_length, minimum_word_occurrence, fold_i = ""):
-    foldstring = ""
+def task2(training_df, test_df, minimum_word_length, minimum_word_occurrence, fold_i=""):
+    fold_string = ""
     if fold_i != "":
-        foldstring = " Fold " + str(fold_i)
+        fold_string = " Fold " + str(fold_i)
 
-    print_header("#", f"Task 2 {foldstring}")
+    print_header("#", f"Task 2 {fold_string}")
 
     print(f"training data\n{training_df}")
     print(f"test data\n{test_df}")
@@ -101,7 +102,7 @@ def extract_features(data, minimum_word_length, minimum_word_occurrence):
     data = data.copy()
     # replace all dashes with spaces
     # data["Review"] = data["Review"].replace("-", ' ', regex=True)
-    data["Review"] = data.loc[:, ('Review')].replace("-", ' ', regex=True)
+    data["Review"] = data.loc[:, 'Review'].replace("-", ' ', regex=True)
     # remove all non-alphanumeric characters
     pattern = r'[^\w\s]'
     data["Review"] = data["Review"].replace(pattern, '', regex=True)
@@ -124,29 +125,34 @@ def extract_features(data, minimum_word_length, minimum_word_occurrence):
 ########################################################################################################################
 # Task 3
 ########################################################################################################################
-def task3(training_df, test_df, train_word_list, test_word_list, minimum_word_length, minimum_word_occurrence, fold_i = ""):
-    foldstring = ""
+def task3(training_df, test_df, train_word_list, test_word_list, minimum_word_length, minimum_word_occurrence,
+          fold_i=""):
+    fold_string = ""
     if fold_i != "":
-        foldstring = " Fold " + str(fold_i)
+        fold_string = " Fold " + str(fold_i)
 
-    print_header("#", f"Task 3 {foldstring}")
-    train_word_counts_pos = word_in_review_occurrences(training_df, train_word_list, minimum_word_length, minimum_word_occurrence,
-                                                   "train_word_counts_pos" + str(fold_i), 'positive')
+    print_header("#", f"Task 3 {fold_string}")
+    train_word_counts_pos = word_in_review_occurrences(training_df, train_word_list, minimum_word_length,
+                                                       minimum_word_occurrence,
+                                                       "train_word_counts_pos" + str(fold_i), 'positive')
     print(train_word_counts_pos.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
-    train_word_counts_neg = word_in_review_occurrences(training_df, train_word_list, minimum_word_length, minimum_word_occurrence,
-                                                   "train_word_counts_neg" + str(fold_i), 'negative')
+    train_word_counts_neg = word_in_review_occurrences(training_df, train_word_list, minimum_word_length,
+                                                       minimum_word_occurrence,
+                                                       "train_word_counts_neg" + str(fold_i), 'negative')
     print(train_word_counts_neg.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
-    test_word_counts_pos = word_in_review_occurrences(test_df, test_word_list, minimum_word_length, minimum_word_occurrence,
-                                                  "test_word_counts_pos" + str(fold_i), 'positive')
+    test_word_counts_pos = word_in_review_occurrences(test_df, test_word_list, minimum_word_length,
+                                                      minimum_word_occurrence,
+                                                      "test_word_counts_pos" + str(fold_i), 'positive')
     print(test_word_counts_pos.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
-    test_word_counts_neg = word_in_review_occurrences(test_df, test_word_list, minimum_word_length, minimum_word_occurrence,
-                                                  "test_word_counts_neg" + str(fold_i), 'negative')
+    test_word_counts_neg = word_in_review_occurrences(test_df, test_word_list, minimum_word_length,
+                                                      minimum_word_occurrence,
+                                                      "test_word_counts_neg" + str(fold_i), 'negative')
     print(test_word_counts_neg.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
@@ -189,22 +195,23 @@ def word_in_review_occurrences(df, word_list, minimum_word_length, minimum_word_
 ########################################################################################################################
 # Task 4
 ########################################################################################################################
-def task4(training_df, test_df, train_word_counts_pos, train_word_counts_neg, test_word_counts_pos, test_word_counts_neg, fold_i=""):
-    foldstring = ""
+def task4(training_df, test_df, train_word_counts_pos, train_word_counts_neg, test_word_counts_pos,
+          test_word_counts_neg, fold_i=""):
+    fold_string = ""
     if fold_i != "":
-        foldstring = " Fold " + str(fold_i)
+        fold_string = " Fold " + str(fold_i)
 
-    print_header("#", f"Task 4{foldstring}")
+    print_header("#", f"Task 4{fold_string}")
 
     # To calculate conditional probability, I need to find the probability a word is in a review,
     # and the probability a review is positive,
     # then divide the former by the latter.
 
     # calculate priors
-    training_positive_prior = calculatePriors(training_df, 'positive')
-    training_negative_prior = calculatePriors(training_df, 'negative')
-    test_positive_prior = calculatePriors(test_df, 'positive')
-    test_negative_prior = calculatePriors(test_df, 'negative')
+    training_positive_prior = calculate_priors(training_df, 'positive')
+    training_negative_prior = calculate_priors(training_df, 'negative')
+    test_positive_prior = calculate_priors(test_df, 'positive')
+    test_negative_prior = calculate_priors(test_df, 'negative')
 
     print("Priors")
     print(f"Training DataProbability. Positive: {training_positive_prior:.2f}, Negative: {training_negative_prior:.2f}")
@@ -213,10 +220,14 @@ def task4(training_df, test_df, train_word_counts_pos, train_word_counts_neg, te
     print_divider("-")
 
     # calculate conditional probability
-    train_word_counts_pos = calculateConditionalProbability(train_word_counts_pos, training_df.shape[0], training_positive_prior)
-    train_word_counts_neg = calculateConditionalProbability(train_word_counts_neg, training_df.shape[0], training_negative_prior)
-    test_word_counts_pos = calculateConditionalProbability(test_word_counts_pos, test_df.shape[0], test_positive_prior)
-    test_word_counts_neg = calculateConditionalProbability(test_word_counts_neg, test_df.shape[0], test_negative_prior)
+    train_word_counts_pos = calculate_conditional_probability(train_word_counts_pos, training_df.shape[0],
+                                                              training_positive_prior)
+    train_word_counts_neg = calculate_conditional_probability(train_word_counts_neg, training_df.shape[0],
+                                                              training_negative_prior)
+    test_word_counts_pos = calculate_conditional_probability(test_word_counts_pos, test_df.shape[0],
+                                                             test_positive_prior)
+    test_word_counts_neg = calculate_conditional_probability(test_word_counts_neg, test_df.shape[0],
+                                                             test_negative_prior)
 
     print(f" Number of training Reviews: {training_df.shape[0]}")
     print(f" Number of test Reviews: {test_df.shape[0]}")
@@ -224,16 +235,16 @@ def task4(training_df, test_df, train_word_counts_pos, train_word_counts_neg, te
 
     print("Training Data")
     print("\nPositive")
-    print (train_word_counts_pos)
+    print(train_word_counts_pos)
     print("\nNegative")
-    print (train_word_counts_neg)
+    print(train_word_counts_neg)
     print_divider("-")
 
     print("Test Data")
     print("\nPositive")
-    print (test_word_counts_pos)
+    print(test_word_counts_pos)
     print("\nNegative")
-    print (test_word_counts_neg)
+    print(test_word_counts_neg)
 
     return (
         training_positive_prior, training_negative_prior, test_positive_prior, test_negative_prior,
@@ -241,17 +252,18 @@ def task4(training_df, test_df, train_word_counts_pos, train_word_counts_neg, te
     )
 
 
-def calculatePriors(df, sentiment):
+def calculate_priors(df, sentiment):
     return df[df['Sentiment'] == sentiment].shape[0] / df.shape[0]
 
 
-def calculateConditionalProbability(word_counts_df, review_count, sentiment_probability):
+def calculate_conditional_probability(word_counts_df, review_count, sentiment_probability):
     alpha = 1
     # Calculate the probability of each word being in a review
-    word_counts_df['probability'] = (word_counts_df['review_count'] + alpha) /( review_count + (alpha * 2))
+    word_counts_df['probability'] = (word_counts_df['review_count'] + alpha) / (review_count + (alpha * 2))
 
     # Calculate the conditional probability of each word being in a review, given the review is positive, with laplace smoothing
-    word_counts_df['conditional_probability'] = (word_counts_df['probability']+ alpha)  / (sentiment_probability + (2*alpha))
+    word_counts_df['conditional_probability'] = (word_counts_df['probability'] + alpha) / (
+            sentiment_probability + (2 * alpha))
     return word_counts_df
 
 
@@ -261,21 +273,22 @@ def calculateConditionalProbability(word_counts_df, review_count, sentiment_prob
 def task5(training_positive_prior, training_negative_prior, test_positive_prior, test_negative_prior,
           train_word_counts_pos, train_word_counts_neg, test_word_counts_pos, test_word_counts_neg,
           test_df, training_df,
-          fold_i = ""):
-    foldstring = ""
+          fold_i=""):
+    fold_string = ""
     if fold_i != "":
-        foldstring = " Fold " + str(fold_i)
+        fold_string = " Fold " + str(fold_i)
 
-    print_header("#", f"Task 5 {foldstring}")
+    print_header("#", f"Task 5 {fold_string}")
 
-    train_predicitons_cache_name = f"{source_filename}{str(fold_i)}-train-predictions-{minimumWordLength}-{minimumWordOccurrence}.pkl"
-    train_predicitons = getPredictionsCache(train_predicitons_cache_name)
-    if train_predicitons == None:
-        train_predicitons = bayesianPredictor(training_df, train_word_counts_pos, train_word_counts_neg, training_positive_prior, training_negative_prior).copy()
-        cachePredictions(train_predicitons_cache_name, train_predicitons)
-    # training_df['Prediction'] = train_predicitons
-    print(type(train_predicitons))
-    training_df.loc[:, 'Prediction'] = train_predicitons
+    train_predictions_cache_name = f"{source_filename}{str(fold_i)}-train-predictions-{minimumWordLength}-{minimumWordOccurrence}.pkl"
+    train_predictions = get_predictions_cache(train_predictions_cache_name)
+    if train_predictions is None:
+        train_predictions = bayesian_predictor(training_df, train_word_counts_pos, train_word_counts_neg,
+                                               training_positive_prior, training_negative_prior).copy()
+        cache_predictions(train_predictions_cache_name, train_predictions)
+    # training_df['Prediction'] = train_predictions
+    print(type(train_predictions))
+    training_df.loc[:, 'Prediction'] = train_predictions
 
     print("Training Data Predictions")
     print(training_df[['Review', 'Prediction']])
@@ -283,20 +296,19 @@ def task5(training_positive_prior, training_negative_prior, test_positive_prior,
 
     print("Test Data Frame Size: " + str(test_df.shape[0]))
 
-
     test_predictions_cache_name = f"{source_filename}{str(fold_i)}-test-predictions-{minimumWordLength}-{minimumWordOccurrence}.pkl"
-    test_predicitons = getPredictionsCache(test_predictions_cache_name)
+    test_predictions = get_predictions_cache(test_predictions_cache_name)
 
     print("Test Data Frame Size: " + str(test_df.shape[0]))
-    print("test_predicitons", test_predicitons)
+    print("test_predictions", test_predictions)
 
-    if test_predicitons == None:
-        test_predicitons = bayesianPredictor(test_df, test_word_counts_pos, test_word_counts_neg, test_positive_prior, test_negative_prior)
-        cachePredictions(test_predictions_cache_name, test_predicitons)
-    test_df['Prediction'] = test_predicitons
+    if test_predictions is None:
+        test_predictions = bayesian_predictor(test_df, test_word_counts_pos, test_word_counts_neg, test_positive_prior,
+                                              test_negative_prior)
+        cache_predictions(test_predictions_cache_name, test_predictions)
+    test_df['Prediction'] = test_predictions
 
     print("Test Data Frame Size: " + str(test_df.shape[0]))
-
 
     print("Test Data Predictions")
     print(test_df[['Review', 'Prediction']])
@@ -304,7 +316,7 @@ def task5(training_positive_prior, training_negative_prior, test_positive_prior,
     return training_df, test_df
 
 
-def getPredictionsCache(cache_name):
+def get_predictions_cache(cache_name):
     cache_filepath = os.path.join(cache_folder, cache_name)
 
     # this task is expensive, so I will cache the results, taking into account the minimum word length and minimum word occurrence may change
@@ -319,11 +331,11 @@ def getPredictionsCache(cache_name):
         return
 
 
-def cachePredictions(cache_name, predicitons):
+def cache_predictions(cache_name, predictions):
     cache_filepath = os.path.join(cache_folder, cache_name)
 
     with open(cache_filepath, 'wb') as f:
-        pickle.dump(predicitons, f)
+        pickle.dump(predictions, f)
     print(f'\nSaved data to cache: {cache_filepath}\n')
 
 
@@ -336,9 +348,9 @@ def calculate_log_likelihood(review, word_counts, prior):
     return log_likelihood
 
 
-def bayesianPredictor(df, word_counts_pos, word_counts_neg, positive_prior, negative_prior):
+def bayesian_predictor(df, word_counts_pos, word_counts_neg, positive_prior, negative_prior):
     predictions = []
-    starttime = time.time()
+    start_time = time.time()
     i = 0
 
     for review in df['Review']:
@@ -350,7 +362,7 @@ def bayesianPredictor(df, word_counts_pos, word_counts_neg, positive_prior, nega
         else:
             predictions.append('negative')
         i += 1
-        progressbar(i, df['Review'].shape[0], starttime)
+        progressbar(i, df['Review'].shape[0], start_time)
 
     return predictions
 
@@ -358,64 +370,118 @@ def bayesianPredictor(df, word_counts_pos, word_counts_neg, positive_prior, nega
 ########################################################################################################################
 # Task 6
 ########################################################################################################################
-def task6(originalData):
+def task6(original_data):
     print_header("#", "Task 6")
 
-    train_score_array= []
-    test_score_array= []
+    train_score_array = []
+    test_score_array = []
+
+    test_true_pos_array = []
+    test_true_neg_array = []
+    test_false_pos_array = []
+    test_false_neg_array = []
 
     for i in range(1, 10):
-        minimumWordLength = i
+        local_minimum_word_length = i
 
         training_score = 0
         test_score = 0
 
+        training_true_positive = 0
+        training_true_negative = 0
+        training_false_positive = 0
+        training_false_negative = 0
 
-        df = originalData.copy()
-        print(originalData)
+        df = original_data.copy()
+        print(original_data)
 
         n = 5
         shuffle = True
-        randomState = 42
+        random_state = 42
 
-        kfold =  sklearn.model_selection.KFold(n_splits=n, shuffle=shuffle, random_state=randomState)
+        k_fold = sklearn.model_selection.KFold(n_splits=n, shuffle=shuffle, random_state=random_state)
 
-        result = kfold.split(df)
+        result = k_fold.split(df)
 
-        for i, (t_ind, v_ind) in enumerate(result):
-            train = df.iloc[t_ind]  # train set
-            test = df.iloc[v_ind]  # validation set
+        for j, (train_i, test_i) in enumerate(result):
+            train = df.iloc[train_i]  # train set
+            test = df.iloc[test_i]  # train set
 
-            training_df, test_df = runAllTasks(train, train, randomState, i)
+            training_df, test_df = run_all_tasks(train, test, i, local_minimum_word_length)
 
-            training_score += training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0] / training_df.shape[0]
+            training_score += training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0] / \
+                              training_df.shape[0]
             test_score += test_df[test_df["Sentiment"] == test_df["Prediction"]].shape[0] / test_df.shape[0]
+
+            if (training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0]) & (
+                    training_df["Sentiment"] == "positive"):
+                training_true_positive += 1
+
+            if (training_df[training_df["Sentiment"] != training_df["Prediction"]].shape[0]) & (
+                    training_df["Sentiment"] == "positive"):
+                training_false_positive += 1
+
+            if (training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0]) & (
+                    training_df["Sentiment"] == "negative"):
+                training_true_negative += 1
+
+            if (training_df[training_df["Sentiment"] != training_df["Prediction"]].shape[0]) & (
+                    training_df["Sentiment"] == "negative"):
+                training_false_negative += 1
 
         train_score_array.append(training_score)
         test_score_array.append(test_score)
+
+        test_true_pos_array.append(training_true_positive)
+        test_true_neg_array.append(training_true_negative)
+        test_false_pos_array.append(training_false_positive)
+        test_false_neg_array.append(training_false_negative)
 
     print(f"Average Training Data Accuracy: {sum(train_score_array) / len(train_score_array):.2f}")
     print(f"Maximum Training Data Accuracy: {max(train_score_array):.2f}")
     print(f"Maximum Training Data Score by Minimum Word Length: {train_score_array.index(max(train_score_array)) + 1}")
 
+    print_divider("-")
+
     print(f"Average Test Data Accuracy: {sum(test_score_array) / len(test_score_array):.2f}")
     print(f"Maximum Test Data Accuracy: {max(test_score_array):.2f}")
     print(f"Maximum Test Data Score by Minimum Word Length: {test_score_array.index(max(test_score_array)) + 1}")
 
+    print_divider("-")
+    # print confusion matrix
+    print(f"Training Data Confusion Matrix")
+    for i in range(0, len(test_true_pos_array)):
+        print(f"Minimum Word Length: {i + 1}")
+        print(f"True Positive: {test_true_pos_array[i]}")
+        print(f"True Negative: {test_true_neg_array[i]}")
+        print(f"False Positive: {test_false_pos_array[i]}")
+        print(f"False Negative: {test_false_neg_array[i]}")
+        print_divider("-")
 
-def runAllTasks(test, train, random_state, fold_i):
+        # Percentage of True Positives, True Negatives, False Positives and False Negatives
+        print(
+            f"True Positive Percentage: {test_true_pos_array[i] / (test_true_pos_array[i] + test_false_pos_array[i]) * 100:.2f}%")
+        print(
+            f"True Negative Percentage: {test_true_neg_array[i] / (test_true_neg_array[i] + test_false_neg_array[i]) * 100:.2f}%")
+        print(
+            f"False Positive Percentage: {test_false_pos_array[i] / (test_true_pos_array[i] + test_false_pos_array[i]) * 100:.2f}%")
+        print(
+            f"False Negative Percentage: {test_false_neg_array[i] / (test_true_neg_array[i] + test_false_neg_array[i]) * 100:.2f}%")
+        print_divider("-")
 
+
+def run_all_tasks(test, train, fold_i, local_minimum_word_length):
     (train_word_list, test_word_list) \
-        = task2(train, test, minimumWordLength, minimumWordOccurrence, fold_i)
+        = task2(train, test, local_minimum_word_length, minimumWordOccurrence, fold_i)
 
     (train_word_counts_pos, train_word_counts_neg, test_word_counts_pos, test_word_counts_neg) \
-        = task3(train, test, train_word_list, test_word_list, minimumWordLength, minimumWordOccurrence,
+        = task3(train, test, train_word_list, test_word_list, local_minimum_word_length, minimumWordOccurrence,
                 fold_i)
 
     (training_positive_prior, training_negative_prior, test_positive_prior, test_negative_prior,
      train_word_counts_pos, train_word_counts_neg, test_word_counts_pos, test_word_counts_neg) \
         = task4(train, test, train_word_counts_pos, train_word_counts_neg, test_word_counts_pos,
-                test_word_counts_neg)
+                test_word_counts_neg, fold_i)
 
     training_df, test_df = task5(training_positive_prior, training_negative_prior, test_positive_prior,
                                  test_negative_prior,
@@ -480,8 +546,8 @@ def main():
     if not os.path.exists(cache_folder):
         os.makedirs(cache_folder)
 
-    originalData = read_data()
-    df = originalData.copy()
+    original_data = read_data()
+    df = original_data.copy()
 
     # Task 1
     training_df, test_df = task1(df)
@@ -501,14 +567,14 @@ def main():
                 test_word_counts_neg)
 
     # Task 5
-    training_df, test_df = task5(training_positive_prior, training_negative_prior, test_positive_prior,
-                                 test_negative_prior,
-                                 train_word_counts_pos, train_word_counts_neg, test_word_counts_pos,
-                                 test_word_counts_neg,
-                                 test_df, training_df)
+    task5(training_positive_prior, training_negative_prior, test_positive_prior,
+          test_negative_prior,
+          train_word_counts_pos, train_word_counts_neg, test_word_counts_pos,
+          test_word_counts_neg,
+          test_df, training_df)
 
     # Task 6
-    task6(originalData)
+    task6(original_data)
 
     # Task 7
     task7()
