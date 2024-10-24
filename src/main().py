@@ -1,11 +1,12 @@
 import math
-import pandas as pd
+import multiprocessing
 import os
 import pickle
 import time
-import sklearn.model_selection
-import multiprocessing
 from multiprocessing import Pool
+
+import pandas as pd
+import sklearn.model_selection
 
 source_filename = 'movie_reviews'
 file_extension = '.xlsx'
@@ -131,11 +132,13 @@ def task3(training_df, train_word_list, minimum_word_length, minimum_word_occurr
     # Count the number of times each word occurs in a review by sentiment the training and test data
     train_word_counts_pos = word_in_review_occurrences(training_df, train_word_list, minimum_word_length, minimum_word_occurrence,
                                                        "train_word_counts_pos" + str(fold_i), 'positive')
+    print("Positive train_word_counts_pos")
     print(train_word_counts_pos.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
     train_word_counts_neg = word_in_review_occurrences(training_df, train_word_list, minimum_word_length, minimum_word_occurrence,
                                                        "train_word_counts_neg" + str(fold_i), 'negative')
+    print("Negative train_word_counts_pos")
     print(train_word_counts_neg.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
@@ -271,10 +274,10 @@ def task5(training_positive_prior, training_negative_prior,
 
     print("Training Data Predictions")
     print(training_df)
-    print(training_df[(training_df["Prediction"] == "negative")])
-    print(training_df[(training_df["Prediction"] == "positive")])
+    print(training_df[(training_df["Prediction"] == "negative")].shape[0])
+    print(training_df[(training_df["Prediction"] == "positive")].shape[0])
 
-
+    print("Training Data Accuracy: " + str(training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0] / training_df.shape[0]))
 
 
 
@@ -311,8 +314,9 @@ def cache_predictions(cache_name, predictions):
 # Calculate the log likelihood of a review being positive or negative
 def calculate_log_likelihood(review, word_counts, prior):
     log_likelihood = math.log(prior)
-    for word in review:
-        if word in word_counts['Word'].values:
+
+    for word in review.strip().replace("-", ' ').replace(r'[^\w\s]', '').lower().split():
+        if word in word_counts['Word'].to_list():
             word_prob = word_counts[word_counts['Word'] == word]['conditional_probability'].values[0]
             log_likelihood += math.log(word_prob)
     return log_likelihood
@@ -322,26 +326,17 @@ def bayesian_predictor(df, word_counts_pos, word_counts_neg, positive_prior, neg
     predictions = []
     start_time = time.time()
     i = 0
-
-    print(f"df['Review'].shape[0] {df['Review'].shape[0]}")
-    print("test1")
-
     for review in df['Review']:
-        print("test2")
-
         # Calculate the log likelihood of the review being positive or negative
         log_likelihood_pos = calculate_log_likelihood(review, word_counts_pos, positive_prior)
         log_likelihood_neg = calculate_log_likelihood(review, word_counts_neg, negative_prior)
 
-        # Debug prints
-        print_divider("-")
-        print(f"debug {i}")
-        print(f"Review: {review}")
-        print(f"Log Likelihood Positive: {log_likelihood_pos}")
-        print(f"Log Likelihood Negative: {log_likelihood_neg}")
-        print(f"Positive Prior: {positive_prior}")
-        print(f"Negative Prior: {negative_prior}")
-        print_divider("-")
+        # # Debug prints
+        # print_divider("-")
+        # print(f"debug {i}")
+        # print(f"Log Likelihood Positive: {log_likelihood_pos}")
+        # print(f"Log Likelihood Negative: {log_likelihood_neg}")
+        # print_divider("-")
 
         # Make a prediction based on the log likelihood, Which ever is higher is the prediction
         if log_likelihood_pos > log_likelihood_neg:
@@ -350,10 +345,6 @@ def bayesian_predictor(df, word_counts_pos, word_counts_neg, positive_prior, neg
             predictions.append('negative')
         i += 1
         progressbar(i, df['Review'].shape[0], start_time)
-
-    print(f"Predictions: {len(predictions)}")
-    print("test3")
-
     return predictions
 
 
