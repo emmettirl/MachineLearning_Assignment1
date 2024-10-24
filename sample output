@@ -1,0 +1,1600 @@
+"D:\Documents\code\machine learning\Assignment 1\MachineLearning_Assignment1\.venv\Scripts\python.exe" "D:\Documents\code\machine learning\Assignment 1\MachineLearning_Assignment1\src\main().py"
+Loaded data from cache
+
+
+################################################################################
+                                     Task 1
+################################################################################
+
+
+--------------------------------------------------------------------------------
+
+Total row count 49999
+
+--------------------------------------------------------------------------------
+
+Positive Labels in training data: 12500
+Negative Labels in training data: 12500
+
+--------------------------------------------------------------------------------
+
+Positive Labels in test data: 12499
+Negative Labels in test data: 12500
+
+################################################################################
+                                    Task 2
+################################################################################
+
+training data
+                                                  Review Sentiment
+1      It's a pretty good cast, but the film has nowh...  negative
+2      This ludicrous film offers the standard 1970's...  negative
+4      I really have to say, this was always a favori...  positive
+6      I love this movie. My friend Marcus and I were...  positive
+7      Street Fight is a brilliant piece of brutal sa...  positive
+...                                                  ...       ...
+49987  I am marking this as a "spoiler" only because ...  negative
+49988  After reading only two of the comments herein,...  positive
+49990  I remember seeing this years ago when it first...  positive
+49994  Whattt was with the sound? It sounded like it ...  negative
+49996  And maybe, as Fred Sandford used to say, "one ...  negative
+
+[25000 rows x 2 columns]
+test data
+                                                  Review Sentiment
+0      Of all the directors ever to sit behind a came...  negative
+3      DO not take this film seriously, rent it with ...  negative
+5      Wow. I felt like I needed to shower off after ...  negative
+14     I was lucky enough to have seen this film at i...  positive
+16     At 20 years old, Francis Ouimet (Shia Lebouf) ...  positive
+...                                                  ...       ...
+49992  I have only praise for this film. From start t...  positive
+49993  What a show! Lorenzo Lamas once again proves h...  positive
+49995  Before launching into whether this film is wor...  negative
+49997  Garden State must rate amongst the most contri...  negative
+49998  I accidentally caught this in the middle flipp...  negative
+
+[24999 rows x 2 columns]
+Number of unique words in training data, longer than 12 characters, which occur more than 100 times: 71
+Number of unique words in test data, longer than 12 characters, which occur more than 100 times: 67
+
+################################################################################
+                                    Task 3
+################################################################################
+
+Loaded data from cache: cache\movie_reviews-train_word_counts_pos-12-100.pkl
+
+              Word  review_count
+0     performances          1083
+1     entertaining           785
+5     relationship           723
+4   cinematography           525
+3     particularly           502
+..             ...           ...
+27   uninteresting            25
+29    unconvincing            24
+61    ridiculously            21
+59    unbelievably            21
+46  writerdirector             0
+
+[71 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-train_word_counts_neg-12-100.pkl
+
+              Word  review_count
+1     entertaining           555
+0     performances           525
+6     disappointed           524
+3     particularly           431
+4   cinematography           374
+..             ...           ...
+33   extraordinary            25
+35    breathtaking            25
+58    psychiatrist            24
+44   unforgettable            22
+46  writerdirector             0
+
+[71 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-test_word_counts_pos-12-100.pkl
+
+               Word  review_count
+0      performances           991
+1      entertaining           798
+4      relationship           662
+5    cinematography           508
+3      particularly           488
+..              ...           ...
+35     unconvincing            24
+55  unintentionally            18
+39    uninteresting            11
+43   writerdirector             0
+41     frankenstein             0
+
+[67 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-test_word_counts_neg-12-100.pkl
+
+              Word  review_count
+1     entertaining           542
+6     disappointed           522
+0     performances           496
+3     particularly           398
+4     relationship           379
+..             ...           ...
+24    nevertheless            26
+47    breathtaking            26
+42   unforgettable            13
+41    frankenstein             2
+43  writerdirector             0
+
+[67 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+
+################################################################################
+                                     Task 4
+################################################################################
+
+Priors
+Training DataProbability. Positive: 0.50, Negative: 0.50
+Test Data Probability. Positive: 0.50, Negative: 0.50
+
+--------------------------------------------------------------------------------
+
+ Number of training Reviews: 25000
+ Number of test Reviews: 24999
+
+--------------------------------------------------------------------------------
+
+Training Data
+
+Positive
+              Word  review_count  probability  conditional_probability
+0     performances          1083     0.043357                 0.417343
+1     entertaining           785     0.031437                 0.412575
+2    unfortunately           187     0.007519                 0.403008
+3     particularly           502     0.020118                 0.408047
+4   cinematography           525     0.021038                 0.408415
+..             ...           ...          ...                      ...
+66    deliberately            56     0.002280                 0.400912
+67   unintentional            39     0.001600                 0.400640
+68    consistently            62     0.002520                 0.401008
+69   revolutionary            46     0.001880                 0.400752
+70    specifically            46     0.001880                 0.400752
+
+[71 rows x 4 columns]
+
+Negative
+              Word  review_count  probability  conditional_probability
+0     performances           525     0.021038                 0.408415
+1     entertaining           555     0.022238                 0.408895
+2    unfortunately           323     0.012959                 0.405184
+3     particularly           431     0.017279                 0.406911
+4   cinematography           374     0.014999                 0.406000
+..             ...           ...          ...                      ...
+66    deliberately            47     0.001920                 0.400768
+67   unintentional           188     0.007559                 0.403024
+68    consistently            42     0.001720                 0.400688
+69   revolutionary            37     0.001520                 0.400608
+70    specifically            40     0.001640                 0.400656
+
+[71 rows x 4 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data
+
+Positive
+              Word  review_count  probability  conditional_probability
+0     performances           991     0.039678                 0.415875
+1     entertaining           798     0.031959                 0.412787
+2    unfortunately           155     0.006240                 0.402499
+3     particularly           488     0.019559                 0.407827
+4     relationship           662     0.026519                 0.410611
+..             ...           ...          ...                      ...
+62    conventional           119     0.004800                 0.401923
+63  responsibility            61     0.002480                 0.400995
+64    unbelievably            31     0.001280                 0.400515
+65    convincingly            62     0.002520                 0.401011
+66   unintentional            33     0.001360                 0.400547
+
+[67 rows x 4 columns]
+
+Negative
+              Word  review_count  probability  conditional_probability
+0     performances           496     0.019879                 0.407948
+1     entertaining           542     0.021719                 0.408684
+2    unfortunately           310     0.012440                 0.404973
+3     particularly           398     0.015959                 0.406380
+4     relationship           379     0.015199                 0.406077
+..             ...           ...          ...                      ...
+62    conventional            47     0.001920                 0.400765
+63  responsibility            40     0.001640                 0.400653
+64    unbelievably            66     0.002680                 0.401069
+65    convincingly            54     0.002200                 0.400877
+66   unintentional           171     0.006880                 0.402749
+
+[67 rows x 4 columns]
+
+################################################################################
+                                    Task 5
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 525.89s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 525.93s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews-train-predictions-12-100.pkl
+
+<class 'list'>
+Training Data Predictions
+                                                  Review Prediction
+1      It's a pretty good cast, but the film has nowh...   negative
+2      This ludicrous film offers the standard 1970's...   negative
+4      I really have to say, this was always a favori...   negative
+6      I love this movie. My friend Marcus and I were...   negative
+7      Street Fight is a brilliant piece of brutal sa...   negative
+...                                                  ...        ...
+49987  I am marking this as a "spoiler" only because ...   negative
+49988  After reading only two of the comments herein,...   negative
+49990  I remember seeing this years ago when it first...   negative
+49994  Whattt was with the sound? It sounded like it ...   negative
+49996  And maybe, as Fred Sandford used to say, "one ...   negative
+
+[25000 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data Frame Size: 24999
+Test Data Frame Size: 24999
+test_predicitons None
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 569.13s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 569.15s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews-test-predictions-12-100.pkl
+
+Test Data Frame Size: 24999
+Test Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   negative
+3      DO not take this film seriously, rent it with ...   negative
+5      Wow. I felt like I needed to shower off after ...   negative
+14     I was lucky enough to have seen this film at i...   negative
+16     At 20 years old, Francis Ouimet (Shia Lebouf) ...   negative
+...                                                  ...        ...
+49992  I have only praise for this film. From start t...   negative
+49993  What a show! Lorenzo Lamas once again proves h...   negative
+49995  Before launching into whether this film is wor...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[24999 rows x 2 columns]
+
+################################################################################
+                                     Task 6
+################################################################################
+
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+...                                                  ...       ...    ...
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[49999 rows x 3 columns]
+
+################################################################################
+                                 Task 2  Fold 0
+################################################################################
+
+training data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+5      Wow. I felt like I needed to shower off after ...  negative   test
+...                                                  ...       ...    ...
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[39999 rows x 3 columns]
+test data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+5      Wow. I felt like I needed to shower off after ...  negative   test
+...                                                  ...       ...    ...
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[39999 rows x 3 columns]
+Number of unique words in training data, longer than 12 characters, which occur more than 100 times: 134
+Number of unique words in test data, longer than 12 characters, which occur more than 100 times: 134
+
+################################################################################
+                                 Task 3  Fold 0
+################################################################################
+
+Loaded data from cache: cache\movie_reviews-train_word_counts_pos0-12-100.pkl
+
+               Word  review_count
+0      performances          1649
+1      entertaining          1274
+5      relationship          1092
+4    cinematography           841
+3      particularly           810
+..              ...           ...
+125   screenwriters            19
+61     frankenstein             0
+46   writerdirector             0
+107    shakespeares             0
+133    christianity             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-train_word_counts_neg0-12-100.pkl
+
+               Word  review_count
+1      entertaining           876
+6      disappointed           824
+0      performances           810
+3      particularly           642
+4    cinematography           605
+..              ...           ...
+117    heartwarming            18
+61     frankenstein             2
+133    christianity             1
+46   writerdirector             0
+107    shakespeares             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-test_word_counts_pos0-12-100.pkl
+
+               Word  review_count
+0      performances          1649
+1      entertaining          1274
+5      relationship          1092
+4    cinematography           841
+3      particularly           810
+..              ...           ...
+125   screenwriters            19
+61     frankenstein             0
+46   writerdirector             0
+107    shakespeares             0
+133    christianity             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-test_word_counts_neg0-12-100.pkl
+
+               Word  review_count
+1      entertaining           876
+6      disappointed           824
+0      performances           810
+3      particularly           642
+4    cinematography           605
+..              ...           ...
+117    heartwarming            18
+61     frankenstein             2
+133    christianity             1
+46   writerdirector             0
+107    shakespeares             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+
+################################################################################
+                                     Task 4
+################################################################################
+
+Priors
+Training DataProbability. Positive: 0.50, Negative: 0.50
+Test Data Probability. Positive: 0.50, Negative: 0.50
+
+--------------------------------------------------------------------------------
+
+ Number of training Reviews: 39999
+ Number of test Reviews: 39999
+
+--------------------------------------------------------------------------------
+
+Training Data
+
+Positive
+               Word  review_count  probability  conditional_probability
+0      performances          1649     0.041249                 0.416339
+1      entertaining          1274     0.031874                 0.412591
+2     unfortunately           267     0.006700                 0.402525
+3      particularly           810     0.020274                 0.407953
+4    cinematography           841     0.021049                 0.408263
+..              ...           ...          ...                      ...
+129    independence            37     0.000950                 0.400226
+130    recognizable            72     0.001825                 0.400576
+131    surroundings            67     0.001700                 0.400526
+132   automatically            45     0.001150                 0.400306
+133    christianity             0     0.000025                 0.399856
+
+[134 rows x 4 columns]
+
+Negative
+               Word  review_count  probability  conditional_probability
+0      performances           810     0.020274                 0.408267
+1      entertaining           876     0.021924                 0.408927
+2     unfortunately           511     0.012800                 0.405276
+3      particularly           642     0.016075                 0.406586
+4    cinematography           605     0.015150                 0.406216
+..              ...           ...          ...                      ...
+129    independence            21     0.000550                 0.400374
+130    recognizable            60     0.001525                 0.400764
+131    surroundings            32     0.000825                 0.400484
+132   automatically            54     0.001375                 0.400704
+133    christianity             1     0.000050                 0.400174
+
+[134 rows x 4 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data
+
+Positive
+               Word  review_count  probability  conditional_probability
+0      performances          1649     0.041249                 0.416339
+1      entertaining          1274     0.031874                 0.412591
+2     unfortunately           267     0.006700                 0.402525
+3      particularly           810     0.020274                 0.407953
+4    cinematography           841     0.021049                 0.408263
+..              ...           ...          ...                      ...
+129    independence            37     0.000950                 0.400226
+130    recognizable            72     0.001825                 0.400576
+131    surroundings            67     0.001700                 0.400526
+132   automatically            45     0.001150                 0.400306
+133    christianity             0     0.000025                 0.399856
+
+[134 rows x 4 columns]
+
+Negative
+               Word  review_count  probability  conditional_probability
+0      performances           810     0.020274                 0.408267
+1      entertaining           876     0.021924                 0.408927
+2     unfortunately           511     0.012800                 0.405276
+3      particularly           642     0.016075                 0.406586
+4    cinematography           605     0.015150                 0.406216
+..              ...           ...          ...                      ...
+129    independence            21     0.000550                 0.400374
+130    recognizable            60     0.001525                 0.400764
+131    surroundings            32     0.000825                 0.400484
+132   automatically            54     0.001375                 0.400704
+133    christianity             1     0.000050                 0.400174
+
+[134 rows x 4 columns]
+
+################################################################################
+                                 Task 5  Fold 0
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 972.77s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 972.78s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews0-train-predictions-12-100.pkl
+
+<class 'list'>
+Training Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   positive
+1      It's a pretty good cast, but the film has nowh...   positive
+2      This ludicrous film offers the standard 1970's...   positive
+3      DO not take this film seriously, rent it with ...   positive
+5      Wow. I felt like I needed to shower off after ...   positive
+...                                                  ...        ...
+49994  Whattt was with the sound? It sounded like it ...   positive
+49995  Before launching into whether this film is wor...   positive
+49996  And maybe, as Fred Sandford used to say, "one ...   positive
+49997  Garden State must rate amongst the most contri...   positive
+49998  I accidentally caught this in the middle flipp...   positive
+
+[39999 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data Frame Size: 39999
+Test Data Frame Size: 39999
+test_predicitons None
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 933.46s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 933.48s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews0-test-predictions-12-100.pkl
+
+Test Data Frame Size: 39999
+Test Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   positive
+1      It's a pretty good cast, but the film has nowh...   positive
+2      This ludicrous film offers the standard 1970's...   positive
+3      DO not take this film seriously, rent it with ...   positive
+5      Wow. I felt like I needed to shower off after ...   positive
+...                                                  ...        ...
+49994  Whattt was with the sound? It sounded like it ...   positive
+49995  Before launching into whether this film is wor...   positive
+49996  And maybe, as Fred Sandford used to say, "one ...   positive
+49997  Garden State must rate amongst the most contri...   positive
+49998  I accidentally caught this in the middle flipp...   positive
+
+[39999 rows x 2 columns]
+Fold 0 Training Data Accuracy: 0.50
+Fold 0 Test Data Accuracy: 0.50
+
+################################################################################
+                                 Task 2  Fold 1
+################################################################################
+
+training data
+                                                  Review Sentiment  Split
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+5      Wow. I felt like I needed to shower off after ...  negative   test
+6      I love this movie. My friend Marcus and I were...  positive  train
+...                                                  ...       ...    ...
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[39999 rows x 3 columns]
+test data
+                                                  Review Sentiment  Split
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+5      Wow. I felt like I needed to shower off after ...  negative   test
+6      I love this movie. My friend Marcus and I were...  positive  train
+...                                                  ...       ...    ...
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[39999 rows x 3 columns]
+Number of unique words in training data, longer than 12 characters, which occur more than 100 times: 129
+Number of unique words in test data, longer than 12 characters, which occur more than 100 times: 129
+
+################################################################################
+                                 Task 3  Fold 1
+################################################################################
+
+Loaded data from cache: cache\movie_reviews-train_word_counts_pos1-12-100.pkl
+
+               Word  review_count
+0      performances          1697
+1      entertaining          1245
+5      relationship          1104
+4    cinematography           849
+3      particularly           804
+..              ...           ...
+118    championship            23
+120    inexplicably            21
+45   writerdirector             0
+65     frankenstein             0
+99     shakespeares             0
+
+[129 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-train_word_counts_neg1-12-100.pkl
+
+               Word  review_count
+1      entertaining           873
+6      disappointed           843
+0      performances           829
+3      particularly           667
+4    cinematography           575
+..              ...           ...
+118    championship            18
+92    heartbreaking            16
+65     frankenstein             1
+45   writerdirector             0
+99     shakespeares             0
+
+[129 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-test_word_counts_pos1-12-100.pkl
+
+               Word  review_count
+0      performances          1697
+1      entertaining          1245
+5      relationship          1104
+4    cinematography           849
+3      particularly           804
+..              ...           ...
+118    championship            23
+120    inexplicably            21
+45   writerdirector             0
+65     frankenstein             0
+99     shakespeares             0
+
+[129 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Loaded data from cache: cache\movie_reviews-test_word_counts_neg1-12-100.pkl
+
+               Word  review_count
+1      entertaining           873
+6      disappointed           843
+0      performances           829
+3      particularly           667
+4    cinematography           575
+..              ...           ...
+118    championship            18
+92    heartbreaking            16
+65     frankenstein             1
+45   writerdirector             0
+99     shakespeares             0
+
+[129 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+
+################################################################################
+                                     Task 4
+################################################################################
+
+Priors
+Training DataProbability. Positive: 0.50, Negative: 0.50
+Test Data Probability. Positive: 0.50, Negative: 0.50
+
+--------------------------------------------------------------------------------
+
+ Number of training Reviews: 39999
+ Number of test Reviews: 39999
+
+--------------------------------------------------------------------------------
+
+Training Data
+
+Positive
+               Word  review_count  probability  conditional_probability
+0      performances          1697     0.042449                 0.417048
+1      entertaining          1245     0.031149                 0.412528
+2     unfortunately           273     0.006850                 0.402806
+3      particularly           804     0.020124                 0.408117
+4    cinematography           849     0.021249                 0.408567
+..              ...           ...          ...                      ...
+124    surroundings            72     0.001825                 0.400796
+125    considerably            51     0.001300                 0.400586
+126    respectively            73     0.001850                 0.400806
+127    recognizable            70     0.001775                 0.400776
+128    contribution            91     0.002300                 0.400986
+
+[129 rows x 4 columns]
+
+Negative
+               Word  review_count  probability  conditional_probability
+0      performances           829     0.020749                 0.408232
+1      entertaining           873     0.021849                 0.408672
+2     unfortunately           497     0.012450                 0.404913
+3      particularly           667     0.016700                 0.406613
+4    cinematography           575     0.014400                 0.405693
+..              ...           ...          ...                      ...
+124    surroundings            31     0.000800                 0.400254
+125    considerably            49     0.001250                 0.400434
+126    respectively            32     0.000825                 0.400264
+127    recognizable            65     0.001650                 0.400594
+128    contribution            49     0.001250                 0.400434
+
+[129 rows x 4 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data
+
+Positive
+               Word  review_count  probability  conditional_probability
+0      performances          1697     0.042449                 0.417048
+1      entertaining          1245     0.031149                 0.412528
+2     unfortunately           273     0.006850                 0.402806
+3      particularly           804     0.020124                 0.408117
+4    cinematography           849     0.021249                 0.408567
+..              ...           ...          ...                      ...
+124    surroundings            72     0.001825                 0.400796
+125    considerably            51     0.001300                 0.400586
+126    respectively            73     0.001850                 0.400806
+127    recognizable            70     0.001775                 0.400776
+128    contribution            91     0.002300                 0.400986
+
+[129 rows x 4 columns]
+
+Negative
+               Word  review_count  probability  conditional_probability
+0      performances           829     0.020749                 0.408232
+1      entertaining           873     0.021849                 0.408672
+2     unfortunately           497     0.012450                 0.404913
+3      particularly           667     0.016700                 0.406613
+4    cinematography           575     0.014400                 0.405693
+..              ...           ...          ...                      ...
+124    surroundings            31     0.000800                 0.400254
+125    considerably            49     0.001250                 0.400434
+126    respectively            32     0.000825                 0.400264
+127    recognizable            65     0.001650                 0.400594
+128    contribution            49     0.001250                 0.400434
+
+[129 rows x 4 columns]
+
+################################################################################
+                                 Task 5  Fold 1
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 911.09s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 911.11s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews1-train-predictions-12-100.pkl
+
+<class 'list'>
+Training Data Predictions
+                                                  Review Prediction
+2      This ludicrous film offers the standard 1970's...   negative
+3      DO not take this film seriously, rent it with ...   negative
+4      I really have to say, this was always a favori...   negative
+5      Wow. I felt like I needed to shower off after ...   negative
+6      I love this movie. My friend Marcus and I were...   negative
+...                                                  ...        ...
+49994  Whattt was with the sound? It sounded like it ...   negative
+49995  Before launching into whether this film is wor...   negative
+49996  And maybe, as Fred Sandford used to say, "one ...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[39999 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data Frame Size: 39999
+Test Data Frame Size: 39999
+test_predicitons None
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 953.87s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 953.89s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews1-test-predictions-12-100.pkl
+
+Test Data Frame Size: 39999
+Test Data Predictions
+                                                  Review Prediction
+2      This ludicrous film offers the standard 1970's...   negative
+3      DO not take this film seriously, rent it with ...   negative
+4      I really have to say, this was always a favori...   negative
+5      Wow. I felt like I needed to shower off after ...   negative
+6      I love this movie. My friend Marcus and I were...   negative
+...                                                  ...        ...
+49994  Whattt was with the sound? It sounded like it ...   negative
+49995  Before launching into whether this film is wor...   negative
+49996  And maybe, as Fred Sandford used to say, "one ...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[39999 rows x 2 columns]
+Fold 1 Training Data Accuracy: 0.50
+Fold 1 Test Data Accuracy: 0.50
+
+################################################################################
+                                 Task 2  Fold 2
+################################################################################
+
+training data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+4      I really have to say, this was always a favori...  positive  train
+5      Wow. I felt like I needed to shower off after ...  negative   test
+...                                                  ...       ...    ...
+49992  I have only praise for this film. From start t...  positive   test
+49993  What a show! Lorenzo Lamas once again proves h...  positive   test
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+
+[39999 rows x 3 columns]
+test data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+4      I really have to say, this was always a favori...  positive  train
+5      Wow. I felt like I needed to shower off after ...  negative   test
+...                                                  ...       ...    ...
+49992  I have only praise for this film. From start t...  positive   test
+49993  What a show! Lorenzo Lamas once again proves h...  positive   test
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+
+[39999 rows x 3 columns]
+Number of unique words in training data, longer than 12 characters, which occur more than 100 times: 132
+Number of unique words in test data, longer than 12 characters, which occur more than 100 times: 132
+
+################################################################################
+                                 Task 3  Fold 2
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.46s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-train_word_counts_pos2-12-100.pkl
+
+                 Word  review_count
+0        performances          1640
+1        entertaining          1285
+4        relationship          1130
+5      cinematography           817
+3        particularly           780
+..                ...           ...
+96   incomprehensible            21
+59       frankenstein             0
+40     writerdirector             0
+99       shakespeares             0
+130      christianity             0
+
+[132 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.54s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-train_word_counts_neg2-12-100.pkl
+
+               Word  review_count
+1      entertaining           865
+6      disappointed           832
+0      performances           811
+3      particularly           676
+5    cinematography           596
+..              ...           ...
+105   heartbreaking            14
+59     frankenstein             2
+40   writerdirector             0
+99     shakespeares             0
+130    christianity             0
+
+[132 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.45s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-test_word_counts_pos2-12-100.pkl
+
+                 Word  review_count
+0        performances          1640
+1        entertaining          1285
+4        relationship          1130
+5      cinematography           817
+3        particularly           780
+..                ...           ...
+96   incomprehensible            21
+59       frankenstein             0
+40     writerdirector             0
+99       shakespeares             0
+130      christianity             0
+
+[132 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.39s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-test_word_counts_neg2-12-100.pkl
+
+               Word  review_count
+1      entertaining           865
+6      disappointed           832
+0      performances           811
+3      particularly           676
+5    cinematography           596
+..              ...           ...
+105   heartbreaking            14
+59     frankenstein             2
+40   writerdirector             0
+99     shakespeares             0
+130    christianity             0
+
+[132 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+
+################################################################################
+                                     Task 4
+################################################################################
+
+Priors
+Training DataProbability. Positive: 0.50, Negative: 0.50
+Test Data Probability. Positive: 0.50, Negative: 0.50
+
+--------------------------------------------------------------------------------
+
+ Number of training Reviews: 39999
+ Number of test Reviews: 39999
+
+--------------------------------------------------------------------------------
+
+Training Data
+
+Positive
+              Word  review_count  probability  conditional_probability
+0     performances          1640     0.041024                 0.416208
+1     entertaining          1285     0.032149                 0.412660
+2    unfortunately           273     0.006850                 0.402545
+3     particularly           780     0.019525                 0.407612
+4     relationship          1130     0.028274                 0.411110
+..             ...           ...          ...                      ...
+127  homosexuality            52     0.001325                 0.400336
+128   anticipation            50     0.001275                 0.400316
+129   considerably            54     0.001375                 0.400356
+130   christianity             0     0.000025                 0.399816
+131   surroundings            66     0.001675                 0.400476
+
+[132 rows x 4 columns]
+
+Negative
+              Word  review_count  probability  conditional_probability
+0     performances           811     0.020299                 0.408318
+1     entertaining           865     0.021649                 0.408858
+2    unfortunately           514     0.012875                 0.405346
+3     particularly           676     0.016925                 0.406967
+4     relationship           577     0.014450                 0.405977
+..             ...           ...          ...                      ...
+127  homosexuality            40     0.001025                 0.400604
+128   anticipation            52     0.001325                 0.400724
+129   considerably            46     0.001175                 0.400664
+130   christianity             0     0.000025                 0.400204
+131   surroundings            30     0.000775                 0.400504
+
+[132 rows x 4 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data
+
+Positive
+              Word  review_count  probability  conditional_probability
+0     performances          1640     0.041024                 0.416208
+1     entertaining          1285     0.032149                 0.412660
+2    unfortunately           273     0.006850                 0.402545
+3     particularly           780     0.019525                 0.407612
+4     relationship          1130     0.028274                 0.411110
+..             ...           ...          ...                      ...
+127  homosexuality            52     0.001325                 0.400336
+128   anticipation            50     0.001275                 0.400316
+129   considerably            54     0.001375                 0.400356
+130   christianity             0     0.000025                 0.399816
+131   surroundings            66     0.001675                 0.400476
+
+[132 rows x 4 columns]
+
+Negative
+              Word  review_count  probability  conditional_probability
+0     performances           811     0.020299                 0.408318
+1     entertaining           865     0.021649                 0.408858
+2    unfortunately           514     0.012875                 0.405346
+3     particularly           676     0.016925                 0.406967
+4     relationship           577     0.014450                 0.405977
+..             ...           ...          ...                      ...
+127  homosexuality            40     0.001025                 0.400604
+128   anticipation            52     0.001325                 0.400724
+129   considerably            46     0.001175                 0.400664
+130   christianity             0     0.000025                 0.400204
+131   surroundings            30     0.000775                 0.400504
+
+[132 rows x 4 columns]
+
+################################################################################
+                                 Task 5  Fold 2
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 937.96s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 938.01s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews2-train-predictions-12-100.pkl
+
+<class 'list'>
+Training Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   positive
+1      It's a pretty good cast, but the film has nowh...   positive
+2      This ludicrous film offers the standard 1970's...   positive
+4      I really have to say, this was always a favori...   positive
+5      Wow. I felt like I needed to shower off after ...   positive
+...                                                  ...        ...
+49992  I have only praise for this film. From start t...   positive
+49993  What a show! Lorenzo Lamas once again proves h...   positive
+49994  Whattt was with the sound? It sounded like it ...   positive
+49995  Before launching into whether this film is wor...   positive
+49996  And maybe, as Fred Sandford used to say, "one ...   positive
+
+[39999 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data Frame Size: 39999
+Test Data Frame Size: 39999
+test_predicitons None
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2614.78s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2614.84s | Remaining: -0.07s
+Saved data to cache: cache\movie_reviews2-test-predictions-12-100.pkl
+
+Test Data Frame Size: 39999
+Test Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   positive
+1      It's a pretty good cast, but the film has nowh...   positive
+2      This ludicrous film offers the standard 1970's...   positive
+4      I really have to say, this was always a favori...   positive
+5      Wow. I felt like I needed to shower off after ...   positive
+...                                                  ...        ...
+49992  I have only praise for this film. From start t...   positive
+49993  What a show! Lorenzo Lamas once again proves h...   positive
+49994  Whattt was with the sound? It sounded like it ...   positive
+49995  Before launching into whether this film is wor...   positive
+49996  And maybe, as Fred Sandford used to say, "one ...   positive
+
+[39999 rows x 2 columns]
+Fold 2 Training Data Accuracy: 0.50
+Fold 2 Test Data Accuracy: 0.50
+
+################################################################################
+                                 Task 2  Fold 3
+################################################################################
+
+training data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+...                                                  ...       ...    ...
+49991  DeCoteau has to be one of the worst "directors...  negative   test
+49992  I have only praise for this film. From start t...  positive   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[39999 rows x 3 columns]
+test data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+2      This ludicrous film offers the standard 1970's...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+...                                                  ...       ...    ...
+49991  DeCoteau has to be one of the worst "directors...  negative   test
+49992  I have only praise for this film. From start t...  positive   test
+49996  And maybe, as Fred Sandford used to say, "one ...  negative  train
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[39999 rows x 3 columns]
+Number of unique words in training data, longer than 12 characters, which occur more than 100 times: 131
+Number of unique words in test data, longer than 12 characters, which occur more than 100 times: 131
+
+################################################################################
+                                 Task 3  Fold 3
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.45s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-train_word_counts_pos3-12-100.pkl
+
+                 Word  review_count
+0        performances          1632
+1        entertaining          1271
+4        relationship          1123
+5      cinematography           812
+3        particularly           780
+..                ...           ...
+89   incomprehensible            19
+61       frankenstein             0
+44     writerdirector             0
+91       shakespeares             0
+129      christianity             0
+
+[131 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.43s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-train_word_counts_neg3-12-100.pkl
+
+               Word  review_count
+1      entertaining           870
+6      disappointed           839
+0      performances           815
+3      particularly           680
+5    cinematography           591
+..              ...           ...
+109   heartbreaking            15
+129    christianity             1
+61     frankenstein             1
+44   writerdirector             0
+91     shakespeares             0
+
+[131 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.47s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-test_word_counts_pos3-12-100.pkl
+
+                 Word  review_count
+0        performances          1632
+1        entertaining          1271
+4        relationship          1123
+5      cinematography           812
+3        particularly           780
+..                ...           ...
+89   incomprehensible            19
+61       frankenstein             0
+44     writerdirector             0
+91       shakespeares             0
+129      christianity             0
+
+[131 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.43s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-test_word_counts_neg3-12-100.pkl
+
+               Word  review_count
+1      entertaining           870
+6      disappointed           839
+0      performances           815
+3      particularly           680
+5    cinematography           591
+..              ...           ...
+109   heartbreaking            15
+129    christianity             1
+61     frankenstein             1
+44   writerdirector             0
+91     shakespeares             0
+
+[131 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+
+################################################################################
+                                     Task 4
+################################################################################
+
+Priors
+Training DataProbability. Positive: 0.50, Negative: 0.50
+Test Data Probability. Positive: 0.50, Negative: 0.50
+
+--------------------------------------------------------------------------------
+
+ Number of training Reviews: 39999
+ Number of test Reviews: 39999
+
+--------------------------------------------------------------------------------
+
+Training Data
+
+Positive
+                  Word  review_count  probability  conditional_probability
+0         performances          1632     0.040824                 0.416507
+1         entertaining          1271     0.031799                 0.412895
+2        unfortunately           278     0.006975                 0.402961
+3         particularly           780     0.019525                 0.407983
+4         relationship          1123     0.028099                 0.411415
+..                 ...           ...          ...                      ...
+126      automatically            41     0.001050                 0.400590
+127      screenwriters            26     0.000675                 0.400440
+128  characterizations            56     0.001425                 0.400740
+129       christianity             0     0.000025                 0.400180
+130       respectively            67     0.001700                 0.400850
+
+[131 rows x 4 columns]
+
+Negative
+                  Word  review_count  probability  conditional_probability
+0         performances           815     0.020399                 0.407986
+1         entertaining           870     0.021774                 0.408536
+2        unfortunately           519     0.013000                 0.405028
+3         particularly           680     0.017025                 0.406637
+4         relationship           583     0.014600                 0.405667
+..                 ...           ...          ...                      ...
+126      automatically            60     0.001525                 0.400440
+127      screenwriters            60     0.001525                 0.400440
+128  characterizations            42     0.001075                 0.400260
+129       christianity             1     0.000050                 0.399850
+130       respectively            33     0.000850                 0.400170
+
+[131 rows x 4 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data
+
+Positive
+                  Word  review_count  probability  conditional_probability
+0         performances          1632     0.040824                 0.416507
+1         entertaining          1271     0.031799                 0.412895
+2        unfortunately           278     0.006975                 0.402961
+3         particularly           780     0.019525                 0.407983
+4         relationship          1123     0.028099                 0.411415
+..                 ...           ...          ...                      ...
+126      automatically            41     0.001050                 0.400590
+127      screenwriters            26     0.000675                 0.400440
+128  characterizations            56     0.001425                 0.400740
+129       christianity             0     0.000025                 0.400180
+130       respectively            67     0.001700                 0.400850
+
+[131 rows x 4 columns]
+
+Negative
+                  Word  review_count  probability  conditional_probability
+0         performances           815     0.020399                 0.407986
+1         entertaining           870     0.021774                 0.408536
+2        unfortunately           519     0.013000                 0.405028
+3         particularly           680     0.017025                 0.406637
+4         relationship           583     0.014600                 0.405667
+..                 ...           ...          ...                      ...
+126      automatically            60     0.001525                 0.400440
+127      screenwriters            60     0.001525                 0.400440
+128  characterizations            42     0.001075                 0.400260
+129       christianity             1     0.000050                 0.399850
+130       respectively            33     0.000850                 0.400170
+
+[131 rows x 4 columns]
+
+################################################################################
+                                 Task 5  Fold 3
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 904.23s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 904.25s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews3-train-predictions-12-100.pkl
+
+<class 'list'>
+Training Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   negative
+1      It's a pretty good cast, but the film has nowh...   negative
+2      This ludicrous film offers the standard 1970's...   negative
+3      DO not take this film seriously, rent it with ...   negative
+4      I really have to say, this was always a favori...   negative
+...                                                  ...        ...
+49991  DeCoteau has to be one of the worst "directors...   negative
+49992  I have only praise for this film. From start t...   negative
+49996  And maybe, as Fred Sandford used to say, "one ...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[39999 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data Frame Size: 39999
+Test Data Frame Size: 39999
+test_predicitons None
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 897.67s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 897.69s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews3-test-predictions-12-100.pkl
+
+Test Data Frame Size: 39999
+Test Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   negative
+1      It's a pretty good cast, but the film has nowh...   negative
+2      This ludicrous film offers the standard 1970's...   negative
+3      DO not take this film seriously, rent it with ...   negative
+4      I really have to say, this was always a favori...   negative
+...                                                  ...        ...
+49991  DeCoteau has to be one of the worst "directors...   negative
+49992  I have only praise for this film. From start t...   negative
+49996  And maybe, as Fred Sandford used to say, "one ...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[39999 rows x 2 columns]
+Fold 3 Training Data Accuracy: 0.50
+Fold 3 Test Data Accuracy: 0.50
+
+################################################################################
+                                 Task 2  Fold 4
+################################################################################
+
+training data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+5      Wow. I felt like I needed to shower off after ...  negative   test
+...                                                  ...       ...    ...
+49993  What a show! Lorenzo Lamas once again proves h...  positive   test
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[40000 rows x 3 columns]
+test data
+                                                  Review Sentiment  Split
+0      Of all the directors ever to sit behind a came...  negative   test
+1      It's a pretty good cast, but the film has nowh...  negative  train
+3      DO not take this film seriously, rent it with ...  negative   test
+4      I really have to say, this was always a favori...  positive  train
+5      Wow. I felt like I needed to shower off after ...  negative   test
+...                                                  ...       ...    ...
+49993  What a show! Lorenzo Lamas once again proves h...  positive   test
+49994  Whattt was with the sound? It sounded like it ...  negative  train
+49995  Before launching into whether this film is wor...  negative   test
+49997  Garden State must rate amongst the most contri...  negative   test
+49998  I accidentally caught this in the middle flipp...  negative   test
+
+[40000 rows x 3 columns]
+Number of unique words in training data, longer than 12 characters, which occur more than 100 times: 134
+Number of unique words in test data, longer than 12 characters, which occur more than 100 times: 134
+
+################################################################################
+                                 Task 3  Fold 4
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.56s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-train_word_counts_pos4-12-100.pkl
+
+               Word  review_count
+0      performances          1678
+1      entertaining          1257
+5      relationship          1091
+4    cinematography           813
+3      particularly           786
+..              ...           ...
+125    championship            19
+59     frankenstein             0
+47   writerdirector             0
+121    shakespeares             0
+132    christianity             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.46s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-train_word_counts_neg4-12-100.pkl
+
+               Word  review_count
+1      entertaining           904
+6      disappointed           846
+0      performances           819
+3      particularly           651
+4    cinematography           593
+..              ...           ...
+97    heartbreaking            17
+59     frankenstein             2
+132    christianity             1
+47   writerdirector             0
+121    shakespeares             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.46s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-test_word_counts_pos4-12-100.pkl
+
+               Word  review_count
+0      performances          1678
+1      entertaining          1257
+5      relationship          1091
+4    cinematography           813
+3      particularly           786
+..              ...           ...
+125    championship            19
+59     frankenstein             0
+47   writerdirector             0
+121    shakespeares             0
+132    christianity             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 2.44s | Remaining: 0.00s
+Saved data to cache: cache\movie_reviews-test_word_counts_neg4-12-100.pkl
+
+               Word  review_count
+1      entertaining           904
+6      disappointed           846
+0      performances           819
+3      particularly           651
+4    cinematography           593
+..              ...           ...
+97    heartbreaking            17
+59     frankenstein             2
+132    christianity             1
+47   writerdirector             0
+121    shakespeares             0
+
+[134 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+
+################################################################################
+                                     Task 4
+################################################################################
+
+Priors
+Training DataProbability. Positive: 0.50, Negative: 0.50
+Test Data Probability. Positive: 0.50, Negative: 0.50
+
+--------------------------------------------------------------------------------
+
+ Number of training Reviews: 40000
+ Number of test Reviews: 40000
+
+--------------------------------------------------------------------------------
+
+Training Data
+
+Positive
+               Word  review_count  probability  conditional_probability
+0      performances          1678     0.041973                 0.416914
+1      entertaining          1257     0.031448                 0.412703
+2     unfortunately           277     0.006950                 0.402901
+3      particularly           786     0.019674                 0.407992
+4    cinematography           813     0.020349                 0.408262
+..              ...           ...          ...                      ...
+129    respectively            64     0.001625                 0.400770
+130    authenticity            63     0.001600                 0.400760
+131   automatically            38     0.000975                 0.400510
+132    christianity             0     0.000025                 0.400130
+133    anticipation            48     0.001225                 0.400610
+
+[134 rows x 4 columns]
+
+Negative
+               Word  review_count  probability  conditional_probability
+0      performances           819     0.020499                 0.408077
+1      entertaining           904     0.022624                 0.408927
+2     unfortunately           491     0.012299                 0.404798
+3      particularly           651     0.016299                 0.406398
+4    cinematography           593     0.014849                 0.405818
+..              ...           ...          ...                      ...
+129    respectively            38     0.000975                 0.400270
+130    authenticity            38     0.000975                 0.400270
+131   automatically            60     0.001525                 0.400490
+132    christianity             1     0.000050                 0.399900
+133    anticipation            53     0.001350                 0.400420
+
+[134 rows x 4 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data
+
+Positive
+               Word  review_count  probability  conditional_probability
+0      performances          1678     0.041973                 0.416914
+1      entertaining          1257     0.031448                 0.412703
+2     unfortunately           277     0.006950                 0.402901
+3      particularly           786     0.019674                 0.407992
+4    cinematography           813     0.020349                 0.408262
+..              ...           ...          ...                      ...
+129    respectively            64     0.001625                 0.400770
+130    authenticity            63     0.001600                 0.400760
+131   automatically            38     0.000975                 0.400510
+132    christianity             0     0.000025                 0.400130
+133    anticipation            48     0.001225                 0.400610
+
+[134 rows x 4 columns]
+
+Negative
+               Word  review_count  probability  conditional_probability
+0      performances           819     0.020499                 0.408077
+1      entertaining           904     0.022624                 0.408927
+2     unfortunately           491     0.012299                 0.404798
+3      particularly           651     0.016299                 0.406398
+4    cinematography           593     0.014849                 0.405818
+..              ...           ...          ...                      ...
+129    respectively            38     0.000975                 0.400270
+130    authenticity            38     0.000975                 0.400270
+131   automatically            60     0.001525                 0.400490
+132    christianity             1     0.000050                 0.399900
+133    anticipation            53     0.001350                 0.400420
+
+[134 rows x 4 columns]
+
+################################################################################
+                                 Task 5  Fold 4
+################################################################################
+
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 905.88s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 905.89s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews4-train-predictions-12-100.pkl
+
+<class 'list'>
+Training Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   negative
+1      It's a pretty good cast, but the film has nowh...   negative
+3      DO not take this film seriously, rent it with ...   negative
+4      I really have to say, this was always a favori...   negative
+5      Wow. I felt like I needed to shower off after ...   negative
+...                                                  ...        ...
+49993  What a show! Lorenzo Lamas once again proves h...   negative
+49994  Whattt was with the sound? It sounded like it ...   negative
+49995  Before launching into whether this film is wor...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[40000 rows x 2 columns]
+
+--------------------------------------------------------------------------------
+
+Test Data Frame Size: 40000
+Test Data Frame Size: 40000
+test_predicitons None
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 907.04s | Remaining: 0.00s
+████████████████████████████████████████████████████████████████████████████████████████████████████ 100.00% | Elapsed: 907.06s | Remaining: -0.02s
+Saved data to cache: cache\movie_reviews4-test-predictions-12-100.pkl
+
+Test Data Frame Size: 40000
+Test Data Predictions
+                                                  Review Prediction
+0      Of all the directors ever to sit behind a came...   negative
+1      It's a pretty good cast, but the film has nowh...   negative
+3      DO not take this film seriously, rent it with ...   negative
+4      I really have to say, this was always a favori...   negative
+5      Wow. I felt like I needed to shower off after ...   negative
+...                                                  ...        ...
+49993  What a show! Lorenzo Lamas once again proves h...   negative
+49994  Whattt was with the sound? It sounded like it ...   negative
+49995  Before launching into whether this film is wor...   negative
+49997  Garden State must rate amongst the most contri...   negative
+49998  I accidentally caught this in the middle flipp...   negative
+
+[40000 rows x 2 columns]
+Fold 4 Training Data Accuracy: 0.50
+Fold 4 Test Data Accuracy: 0.50
+
+################################################################################
+                                     Task 7
+################################################################################
+
+
+################################################################################
+                                 Execution Time
+################################################################################
+
+Execution time: 12142.40 seconds
+
+Process finished with exit code 0
