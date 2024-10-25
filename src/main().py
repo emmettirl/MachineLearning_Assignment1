@@ -142,6 +142,8 @@ def task3(training_df, train_word_list, minimum_word_length, minimum_word_occurr
     print(train_word_counts_neg.sort_values(by='review_count', ascending=False))
     print_divider("-")
 
+
+
     return train_word_counts_pos, train_word_counts_neg
 
 
@@ -331,13 +333,6 @@ def bayesian_predictor(df, word_counts_pos, word_counts_neg, positive_prior, neg
         log_likelihood_pos = calculate_log_likelihood(review, word_counts_pos, positive_prior)
         log_likelihood_neg = calculate_log_likelihood(review, word_counts_neg, negative_prior)
 
-        # # Debug prints
-        # print_divider("-")
-        # print(f"debug {i}")
-        # print(f"Log Likelihood Positive: {log_likelihood_pos}")
-        # print(f"Log Likelihood Negative: {log_likelihood_neg}")
-        # print_divider("-")
-
         # Make a prediction based on the log likelihood, Which ever is higher is the prediction
         if log_likelihood_pos > log_likelihood_neg:
             predictions.append('positive')
@@ -356,18 +351,14 @@ def task6(original_data):
 
     # Array to store the training and test scores
     train_score_array = []
-    test_score_array = []
-    test_true_pos_array = []
-    test_true_neg_array = []
-    test_false_pos_array = []
-    test_false_neg_array = []
+    true_pos_array = []
+    true_neg_array = []
+    false_pos_array = []
+    false_neg_array = []
 
     # Loop through the minimum word lengths from 1 to 10
     for i in range(1,10):
         local_minimum_word_length = i
-
-        training_score = 0
-        test_score = 0
 
         training_true_positive = 0
         training_true_negative = 0
@@ -390,17 +381,13 @@ def task6(original_data):
             train = df.iloc[train_i]  # train set
 
             # Run all the tasks from 2 to 5 previously defined
-
-            # There was an issue was here in my submission which I corrected this morning.
-            # I had "i" here, but I changed the loop iteration variable to "j" because it's a loop in a loop, and the outer loop used i.
-            # The outer loop was added later, and I didn't catch this change when refactoring because "i" was still defined,
-            # and the runtime didn't finish until after submission.
             training_df = run_all_tasks(train, j, local_minimum_word_length)
             # Calculate the accuracy of the training and test data
+            training_score = 0
+
 
             if training_df.shape[0] > 0:
-                training_score += training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0] / \
-                                  training_df.shape[0]
+                training_score = training_df[training_df["Sentiment"] == training_df["Prediction"]].shape[0] / training_df.shape[0]
             else:
                 print("Warning: training_df is empty for this iteration.")
 
@@ -411,49 +398,44 @@ def task6(original_data):
             training_false_negative += ((training_df["Sentiment"] == "positive") & (training_df["Prediction"] == "negative")).sum()
 
 
-        # Append the scores to the arrays
-        train_score_array.append(training_score)
-        test_score_array.append(test_score)
+            # Append the scores to the arrays
+            train_score_array.append(training_score)
 
         # Append the true positives, true negatives, false positives and false negatives to their arrays
-        test_true_pos_array.append(training_true_positive)
-        test_true_neg_array.append(training_true_negative)
-        test_false_pos_array.append(training_false_positive)
-        test_false_neg_array.append(training_false_negative)
-
-
-    # Print the results
-    print(f"Average Training Data Accuracy: {sum(train_score_array) / len(train_score_array):.2f}")
-    print(f"Maximum Training Data Accuracy: {max(train_score_array):.2f}")
-    print(f"Maximum Training Data Score by Minimum Word Length: {train_score_array.index(max(train_score_array)) + 1}")
-
-    print_divider("-")
-
-    print(f"Average Test Data Accuracy: {sum(test_score_array) / len(test_score_array):.2f}")
-    print(f"Maximum Test Data Accuracy: {max(test_score_array):.2f}")
-    print(f"Maximum Test Data Score by Minimum Word Length: {test_score_array.index(max(test_score_array)) + 1}")
+        true_pos_array.append(training_true_positive)
+        true_neg_array.append(training_true_negative)
+        false_pos_array.append(training_false_positive)
+        false_neg_array.append(training_false_negative)
 
     print_divider("-")
     # print confusion matrix
     print(f"Training Data Confusion Matrix")
-    for i in range(0, len(test_true_pos_array)):
+    for i in range(len(true_pos_array)):
         print(f"Minimum Word Length: {i + 1}")
-        print(f"True Positive: {test_true_pos_array[i]}")
-        print(f"True Negative: {test_true_neg_array[i]}")
-        print(f"False Positive: {test_false_pos_array[i]}")
-        print(f"False Negative: {test_false_neg_array[i]}")
+        print(f"True Positive: {true_pos_array[i]}")
+        print(f"True Negative: {true_neg_array[i]}")
+        print(f"False Positive: {false_pos_array[i]}")
+        print(f"False Negative: {false_neg_array[i]}")
         print_divider("-")
 
         # Percentage of True Positives, True Negatives, False Positives and False Negatives
         print(
-            f"True Positive Percentage: {test_true_pos_array[i] / (test_true_pos_array[i] + test_false_pos_array[i]) * 100:.2f}%")
+            f"True Positive Percentage: {true_pos_array[i] / (true_pos_array[i] + false_pos_array[i]) * 100:.2f}%")
         print(
-            f"True Negative Percentage: {test_true_neg_array[i] / (test_true_neg_array[i] + test_false_neg_array[i]) * 100:.2f}%")
+            f"True Negative Percentage: {true_neg_array[i] / (true_neg_array[i] + false_neg_array[i]) * 100:.2f}%")
         print(
-            f"False Positive Percentage: {test_false_pos_array[i] / (test_true_pos_array[i] + test_false_pos_array[i]) * 100:.2f}%")
+            f"False Positive Percentage: {false_pos_array[i] / (true_pos_array[i] + false_pos_array[i]) * 100:.2f}%")
         print(
-            f"False Negative Percentage: {test_false_neg_array[i] / (test_true_neg_array[i] + test_false_neg_array[i]) * 100:.2f}%")
+            f"False Negative Percentage: {false_neg_array[i] / (true_neg_array[i] + false_neg_array[i]) * 100:.2f}%")
         print_divider("-")
+
+
+
+    # Print the results
+    print_divider("-")
+    print(f"Average Data Accuracy: {sum(train_score_array) / len(train_score_array):.2f}")
+    print(f"Maximum Data Accuracy: {max(train_score_array):.2f}")
+    print(f"Maximum Data Score by Minimum Word Length: {train_score_array.index(max(train_score_array)) + 1}")
 
 
 def run_all_tasks(train, fold_i, local_minimum_word_length):
@@ -469,7 +451,7 @@ def run_all_tasks(train, fold_i, local_minimum_word_length):
      train_word_counts_pos, train_word_counts_neg) \
         = task4(train, train_word_counts_pos, train_word_counts_neg, fold_i)
 
-    training_df, test_df = task5(training_positive_prior, training_negative_prior,
+    training_df = task5(training_positive_prior, training_negative_prior,
                                  train_word_counts_pos, train_word_counts_neg, train.copy(),
                                  fold_i)
 
@@ -539,7 +521,7 @@ def main():
 
     # Create data frames for the training and test sets
     training_df = pd.DataFrame({'Review': training_data, 'Sentiment': training_labels})
-    test_df = pd.DataFrame({'Review': test_data, 'Sentiment': test_labels})
+    pd.DataFrame({'Review': test_data, 'Sentiment': test_labels})
 
     # Task 2
     train_word_list = task2(training_df, minimumWordLength, minimumWordOccurrence)
@@ -559,7 +541,7 @@ def main():
 
     t6_df = original_data.copy()
     # Task 6
-    # task6(t6_df)
+    task6(t6_df)
 
     # Task 7
     task7()
